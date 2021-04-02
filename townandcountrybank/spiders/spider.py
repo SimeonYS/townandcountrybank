@@ -13,9 +13,9 @@ class TtownandcountrybankSpider(scrapy.Spider):
 	def parse(self, response):
 		articles = response.xpath('//div[@class="accordion-content mceEditable"]//li')
 		for article in articles:
-			date = article.xpath('.//a/following-sibling::text()').get()
 			post_links = article.xpath('.//a/@href').get()
 			if not 'pdf' in post_links:
+				date = article.xpath('.//a/following-sibling::text()').get()
 				date = re.findall(r'\w+\s\d+\,\s\d+', date)
 				yield response.follow(post_links, self.parse_post, cb_kwargs=dict(date=date))
 
